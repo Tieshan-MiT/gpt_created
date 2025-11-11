@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>自我介紹 — 個人網頁</title>
+  <style>
+    :root{
+      --purple:#7c3aed;
+      --purple-deep:#5b21b6;
+      --yellow:#f5d013;
+      --bg1:linear-gradient(135deg, rgba(124,58,237,0.92), rgba(245,208,19,0.88));
+      --card-bg: rgba(255,255,255,0.92);
+      --glass: rgba(255,255,255,0.06);
+      --glass-2: rgba(0,0,0,0.12);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans CJK TC", "Helvetica Neue", Arial;
+    }
+    html,body{height:100%;}
+    body{
+      margin:0;min-height:100%;background:var(--bg1);display:flex;align-items:center;justify-content:center;padding:24px;
+    }
+    .container{width:100%;max-width:960px;background:linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.82));border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,0.15);overflow:hidden;display:grid;grid-template-columns:320px 1fr;}
+    @media (max-width:800px){.container{grid-template-columns:1fr;}}
+
+    .sidebar{padding:28px;background:linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0.5));display:flex;flex-direction:column;gap:18px;align-items:center;}
+    .avatar{width:140px;height:140px;border-radius:16px;overflow:hidden;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:48px;color:white;background:linear-gradient(135deg,var(--yellow),var(--purple));box-shadow:0 8px 18px rgba(0,0,0,0.12);}
+    .name{font-size:20px;font-weight:700;color:var(--purple-deep);}
+    .role{font-size:13px;color:rgba(0,0,0,0.6);}
+    .location{font-size:13px;color:rgba(0,0,0,0.55);}
+    .tags{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+    .tag{background:linear-gradient(90deg, rgba(124,58,237,0.12), rgba(245,208,19,0.08));padding:6px 10px;border-radius:999px;font-size:13px;color:var(--purple-deep);border:1px solid rgba(0,0,0,0.04)}
+
+    .main{padding:28px;}
+    .headline{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    h1{margin:0;font-size:22px;color:var(--purple-deep)}
+    p.lead{margin:8px 0 16px;color:rgba(0,0,0,0.7)}
+
+    .card{background:var(--card-bg);padding:16px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,0.06);margin-bottom:16px}
+    .section-title{font-weight:700;color:var(--purple-deep);margin-bottom:8px}
+
+    .interests{display:flex;flex-wrap:wrap;gap:10px}
+    .interest{padding:8px 12px;border-radius:10px;border:1px dashed rgba(0,0,0,0.06);background:var(--glass);font-size:14px}
+
+    .edit-controls{display:flex;gap:8px}
+    button{cursor:pointer;border:0;padding:8px 12px;border-radius:10px;font-weight:600}
+    .btn-primary{background:linear-gradient(90deg,var(--purple),var(--purple-deep));color:white}
+    .btn-accent{background:var(--yellow);color:var(--purple-deep)}
+    .btn-ghost{background:transparent;border:1px solid rgba(0,0,0,0.06)}
+
+    input[type="text"], textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.06);font-size:14px}
+    textarea{min-height:90px;resize:vertical}
+
+    .row{display:flex;gap:12px}
+    .row > *{flex:1}
+    .small{font-size:13px;color:rgba(0,0,0,0.6)}
+    .actions{display:flex;gap:10px;align-items:center}
+
+    /* small footer */
+    .footer{font-size:12px;color:rgba(0,0,0,0.5);margin-top:12px}
+  </style>
+</head>
+<body>
+  <div class="container" id="profilePage">
+    <aside class="sidebar">
+      <div class="avatar" id="avatar">你</div>
+      <div style="text-align:center">
+        <div class="name" id="displayName">姓名 尚未設定</div>
+        <div class="role" id="displayRole">職稱 / 身份</div>
+        <div class="location" id="displayLocation">城市 • 國家</div>
+      </div>
+
+      <div class="tags" id="tagsArea">
+        <div class="tag">前端</div>
+        <div class="tag">攝影</div>
+      </div>
+
+      <div style="width:100%;text-align:center">
+        <div class="small">快速操作</div>
+        <div style="margin-top:8px" class="edit-controls">
+          <button class="btn-primary" id="editBtn">編輯</button>
+          <button class="btn-accent" id="downloadBtn">下載自介</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="headline">
+        <div>
+          <h1>自我介紹</h1>
+          <p class="lead" id="leadText">在這裡用簡短、清晰的句子介紹你自己：你的專業、熱情與目標。</p>
+        </div>
+        <div class="actions">
+          <div class="small">主題</div>
+          <button class="btn-ghost" id="toggleTheme">切換</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">關於我</div>
+        <div id="aboutText" class="small">尚未填寫個人介紹。按下「編輯」開始填寫你的背景、技能與興趣。</div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">技能與專長</div>
+        <div class="interests" id="skillsArea">
+          <div class="interest">HTML</div>
+          <div class="interest">CSS</div>
+          <div class="interest">JavaScript</div>
+        </div>
+      </div>
+
+      <div class="card" id="editPanel" style="display:none">
+        <div class="section-title">編輯自我介紹</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="row">
+            <input type="text" id="inputName" placeholder="姓名（例如：陳小明）">
+            <input type="text" id="inputRole" placeholder="職稱（例如：前端工程師）">
+          </div>
+          <div class="row">
+            <input type="text" id="inputLocation" placeholder="地點（例如：台北, 台灣）">
+            <input type="text" id="inputAvatarText" placeholder="頭像文字（1~2字）">
+          </div>
+          <textarea id="inputAbout" placeholder="關於我：寫出 2-4 句描述你的專業、經驗或興趣。"></textarea>
+
+          <div>
+            <div class="small">技能（用逗號分隔）</div>
+            <input type="text" id="inputSkills" placeholder="例如：React, Node.js, 攝影">
+          </div>
+
+          <div style="display:flex;justify-content:flex-end;gap:8px">
+            <button class="btn-ghost" id="cancelEdit">取消</button>
+            <button class="btn-primary" id="saveEdit">儲存</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">建立於本地 — 可對內容進行編輯並匯出純文字版本</div>
+    </main>
+  </div>
+
+  <script>
+    const editBtn = document.getElementById('editBtn');
+    const editPanel = document.getElementById('editPanel');
+    const cancelEdit = document.getElementById('cancelEdit');
+    const saveEdit = document.getElementById('saveEdit');
+    const displayName = document.getElementById('displayName');
+    const displayRole = document.getElementById('displayRole');
+    const displayLocation = document.getElementById('displayLocation');
+    const displayAvatar = document.getElementById('avatar');
+    const leadText = document.getElementById('leadText');
+    const aboutText = document.getElementById('aboutText');
+    const skillsArea = document.getElementById('skillsArea');
+    const tagsArea = document.getElementById('tagsArea');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const toggleTheme = document.getElementById('toggleTheme');
+
+    const inputName = document.getElementById('inputName');
+    const inputRole = document.getElementById('inputRole');
+    const inputLocation = document.getElementById('inputLocation');
+    const inputAvatarText = document.getElementById('inputAvatarText');
+    const inputAbout = document.getElementById('inputAbout');
+    const inputSkills = document.getElementById('inputSkills');
+
+    function openEdit(){
+      editPanel.style.display = 'block';
+      // prefill
+      inputName.value = displayName.textContent === '姓名 尚未設定' ? '' : displayName.textContent;
+      inputRole.value = displayRole.textContent === '職稱 / 身份' ? '' : displayRole.textContent;
+      inputLocation.value = displayLocation.textContent === '城市 • 國家' ? '' : displayLocation.textContent;
+      inputAvatarText.value = displayAvatar.textContent.trim();
+      inputAbout.value = aboutText.textContent === '尚未填寫個人介紹。按下「編輯」開始填寫你的背景、技能與興趣。' ? '' : aboutText.textContent;
+      // skills
+      inputSkills.value = Array.from(skillsArea.querySelectorAll('.interest')).map(d=>d.textContent).join(', ');
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+
+    function closeEdit(){
+      editPanel.style.display = 'none';
+    }
+
+    editBtn.addEventListener('click', openEdit);
+    cancelEdit.addEventListener('click', closeEdit);
+
+    saveEdit.addEventListener('click', ()=>{
+      const name = inputName.value.trim() || '姓名 尚未設定';
+      const role = inputRole.value.trim() || '職稱 / 身份';
+      const location = inputLocation.value.trim() || '城市 • 國家';
+      const avatar = inputAvatarText.value.trim() || name.charAt(0) || '你';
+      const about = inputAbout.value.trim() || '尚未填寫個人介紹。按下「編輯」開始填寫你的背景、技能與興趣。';
+      const skills = inputSkills.value.split(',').map(s=>s.trim()).filter(Boolean);
+
+      displayName.textContent = name;
+      displayRole.textContent = role;
+      displayLocation.textContent = location;
+      displayAvatar.textContent = avatar.slice(0,2);
+      leadText.textContent = about.split('\n')[0] || about;
+      aboutText.textContent = about;
+
+      // update skills
+      skillsArea.innerHTML = '';
+      tagsArea.innerHTML = '';
+      if(skills.length===0){
+        skillsArea.innerHTML = '<div class="interest">無</div>';
+      } else {
+        skills.forEach(s=>{
+          const el = document.createElement('div');
+          el.className='interest';el.textContent=s;skillsArea.appendChild(el);
+
+          const t = document.createElement('div');
+          t.className='tag';t.textContent=s;tagsArea.appendChild(t);
+        });
+      }
+
+      closeEdit();
+    });
+
+    downloadBtn.addEventListener('click', ()=>{
+      const text = `姓名：${displayName.textContent}\n職稱：${displayRole.textContent}\n地點：${displayLocation.textContent}\n\n關於我：\n${aboutText.textContent}\n\n技能：\n${Array.from(skillsArea.querySelectorAll('.interest')).map(d=>d.textContent).join(', ')}`;
+      const blob = new Blob([text],{type:'text/plain;charset=utf-8'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');a.href=url;a.download='自我介紹.txt';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+    });
+
+    toggleTheme.addEventListener('click', ()=>{
+      const body = document.body;
+      if(body.style.background.includes('255')){
+        // switch to deep purple background
+        body.style.background = 'linear-gradient(135deg, rgba(60,3,91,0.95), rgba(23,11,132,0.95))';
+        document.querySelector('.container').style.background = 'linear-gradient(180deg, rgba(20,12,40,0.82), rgba(20,12,40,0.72))';
+        document.querySelectorAll('.card').forEach(c=>c.style.background='rgba(255,255,255,0.04)');
+      } else {
+        body.style.background = 'var(--bg1)';
+        document.querySelector('.container').style.background = 'linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.82))';
+        document.querySelectorAll('.card').forEach(c=>c.style.background='var(--card-bg)');
+      }
+    });
+
+    // small: init with sample content
+    displayName.textContent='陳小明';
+    displayRole.textContent='前端工程師 / 攝影愛好者';
+    displayLocation.textContent='台北, 台灣';
+    displayAvatar.textContent='陳';
+    aboutText.textContent='我是一名前端工程師，熱衷於建立易用且美觀的使用者介面。平常喜歡攝影與旅行，擅長用視覺化手法呈現資料。';
+    leadText.textContent='我是一名前端工程師與攝影愛好者，喜歡將設計與互動結合。';
+    // skills already set in HTML
+  </script>
+</body>
+</html>
